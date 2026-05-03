@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>QuizForge — Test Your Mind</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ══ START SCREEN ══════════════════════════════════ -->
+  <div id="start-screen" class="screen active">
+    <div class="card">
+      <div class="logo"><span class="logo-dot"></span>QuizForge</div>
+      <h1 class="headline">Test Your<br><span>Knowledge.</span></h1>
+      <p>10 handpicked questions from any category. Race the clock and outsmart your own limits.</p>
+
+      <div class="diff-label">Choose difficulty</div>
+      <div class="diff-grid">
+        <button class="diff-btn selected" data-diff="easy">
+          <span class="diff-icon">🌱</span>
+          <span class="diff-name">Easy</span>
+        </button>
+        <button class="diff-btn" data-diff="medium">
+          <span class="diff-icon">⚡</span>
+          <span class="diff-name">Medium</span>
+        </button>
+        <button class="diff-btn" data-diff="hard">
+          <span class="diff-icon">🔥</span>
+          <span class="diff-name">Hard</span>
+        </button>
+      </div>
+
+      <div class="cat-label">Select category</div>
+      <select class="cat-select" id="cat-select">
+        <option value="0">Any Category</option>
+        <option value="9">General Knowledge</option>
+        <option value="10">Books</option>
+        <option value="11">Film</option>
+        <option value="12">Music</option>
+        <option value="14">Television</option>
+        <option value="15">Video Games</option>
+        <option value="17">Science &amp; Nature</option>
+        <option value="18">Computers</option>
+        <option value="19">Mathematics</option>
+        <option value="21">Sports</option>
+        <option value="22">Geography</option>
+        <option value="23">History</option>
+        <option value="27">Animals</option>
+      </select>
+
+      <button class="btn btn-primary btn-full" id="start-btn">
+        Start Quiz →
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ LOADING SCREEN ════════════════════════════════ -->
+  <div id="loading-screen" class="screen">
+    <div class="card">
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <p id="loading-msg">Fetching questions…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ QUIZ SCREEN ═══════════════════════════════════ -->
+  <div id="quiz-screen" class="screen">
+    <div class="card">
+      <div class="quiz-header">
+        <div class="q-count">Q <span id="q-current">1</span> / <span id="q-total">10</span></div>
+        <div class="score-badge">⭐ <span id="live-score">0</span> pts</div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+
+      <div class="timer-wrap">
+        <svg class="timer-arc-svg" width="48" height="48" viewBox="0 0 40 40">
+          <circle class="timer-arc-bg" cx="20" cy="20" r="18"/>
+          <circle class="timer-arc-fill" id="timer-arc" cx="20" cy="20" r="18"/>
+          <text id="timer-num"
+                x="50%" y="55%"
+                dominant-baseline="middle"
+                text-anchor="middle"
+                style="font-size:11px;font-family:'Syne',sans-serif;font-weight:800;fill:var(--txt);">15</text>
+        </svg>
+        <div style="flex:1;">
+          <div class="timer-time-label">Time left</div>
+          <div class="timer-bar">
+            <div class="timer-bar-fill" id="timer-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="q-body">
+        <div class="q-category" id="q-category">Science</div>
+        <p class="q-text" id="q-text">Loading question…</p>
+        <div class="options" id="options"></div>
+      </div>
+
+      <div class="quiz-footer">
+        <span class="diff-chip" id="diff-chip">Easy</span>
+        <button class="btn btn-primary" id="next-btn" disabled>Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ RESULT SCREEN ══════════════════════════════════ -->
+  <div id="result-screen" class="screen">
+    <div class="card">
+      <div class="result-top">
+        <span class="result-emoji" id="result-emoji">🎉</span>
+        <h2 class="result-title" id="result-title">Excellent!</h2>
+        <p class="result-sub" id="result-sub">You nailed it!</p>
+      </div>
+
+      <div class="score-ring">
+        <div class="ring-wrap">
+          <svg width="140" height="140" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="50"/>
+            <circle class="ring-fg" id="ring-fg" cx="60" cy="60" r="50"/>
+          </svg>
+          <div class="ring-label">
+            <span class="ring-score" id="ring-score">0</span>
+            <span class="ring-total" id="ring-total">/ 10</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-val green" id="stat-correct">0</span>
+          <span class="stat-lbl">Correct</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val red" id="stat-wrong">0</span>
+          <span class="stat-lbl">Wrong</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val gold" id="stat-pct">0%</span>
+          <span class="stat-lbl">Accuracy</span>
+        </div>
+      </div>
+
+      <div class="result-btns">
+        <button class="btn btn-ghost" id="home-btn">Home</button>
+        <button class="btn btn-primary" id="restart-btn">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<!-- App logic — loaded last so DOM is ready -->
+<script src="script.js"></script>
+</body>
+</html>
