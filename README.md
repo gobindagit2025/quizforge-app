@@ -86,7 +86,7 @@ https://opentdb.com/
 
 ## 👨‍💻 Author
 
-Your Name
+GOBINDA CHANRA PANDA
 
 ---
 
